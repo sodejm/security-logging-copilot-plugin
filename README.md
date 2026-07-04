@@ -33,6 +33,14 @@ Modern software development requires strict adherence to security and compliance
    npm install
    ```
 
+## Spec-Driven Development (SDD)
+
+This repository follows a strict **Spec-Driven Development** workflow driven by `spec-kit` to guide development:
+
+- **Constitution**: Project rules, security policies, and standards are defined in [.specify/memory/constitution.md](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/.specify/memory/constitution.md).
+- **Project Context**: The system layout and technologies are documented in [.specify/project-context.md](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/.specify/project-context.md).
+- **Feature Specs**: Feature requirements are modeled as specifications inside the [specs/](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/specs/) directory (e.g., [specs/security-logging-plugin.spec.md](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/specs/security-logging-plugin.spec.md)).
+
 ## Development and IDE Environment
 
 This repository is optimized for development with the **Antigravity IDE** and **Antigravity 2.0** ecosystem.
@@ -42,4 +50,5 @@ This repository is optimized for development with the **Antigravity IDE** and **
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the **PolyForm Noncommercial License 1.0.0** - see the [LICENSE](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/LICENSE) file for details.
+

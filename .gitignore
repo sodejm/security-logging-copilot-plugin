@@ -56,3 +56,9 @@ certs/
 # Antigravity/Gemini IDE local artifacts
 .gemini/
 .agents/scratch/
+
+# Spec-Kit ephemeral/local runs
+.specify/runs/
+.specify/tmp/
+.specify/cache/
+
