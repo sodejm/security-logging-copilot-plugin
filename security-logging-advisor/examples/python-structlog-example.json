@@ -1,0 +1,28 @@
+{
+  "comment": "Example Structlog configuration mapping processors for secure and structured logging",
+  "structlog_processors": [
+    "structlog.stdlib.add_log_level",
+    "structlog.stdlib.add_logger_name",
+    "structlog.processors.TimeStamper(fmt='iso', utc=True)",
+    "structlog.processors.StackInfoRenderer()",
+    "structlog.processors.format_exc_info",
+    "structlog.processors.JSONRenderer()"
+  ],
+  "security_redactor_processor": {
+    "sensitive_keys": [
+      "password",
+      "secret",
+      "token",
+      "auth",
+      "access_token",
+      "refresh_token",
+      "session_id",
+      "credit_card"
+    ],
+    "replacement": "[REDACTED]"
+  },
+  "context_injection": {
+    "correlation_id": "contextvars.ContextVar('correlation_id')",
+    "user_id": "contextvars.ContextVar('user_id')"
+  }
+}

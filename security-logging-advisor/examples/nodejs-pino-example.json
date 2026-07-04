@@ -1,0 +1,28 @@
+{
+  "comment": "Example Pino Logger configuration with redaction and custom format settings",
+  "pino_config": {
+    "level": "info",
+    "timestamp": "pino.stdTimeFunctions.isoTime",
+    "redact": {
+      "paths": [
+        "req.headers.authorization",
+        "req.headers.cookie",
+        "req.body.password",
+        "req.body.secret",
+        "req.body.token",
+        "req.body.creditCard",
+        "user.password",
+        "user.ssn"
+      ],
+      "censor": "[REDACTED]"
+    },
+    "mixin": "addCorrelationContext",
+    "formatters": {
+      "level": "formatLevelString"
+    }
+  },
+  "custom_formatters_code": {
+    "addCorrelationContext": "() => { return { correlationId: httpContext.get('correlationId'), tenantId: httpContext.get('tenantId'), userId: httpContext.get('userId') }; }",
+    "formatLevelString": "(label, number) => { return { level: label.toUpperCase() }; }"
+  }
+}
