@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2026-07-03
 
 ### Added
+
 - **Plugin Manifests**: Created `plugin.json`, `.github/plugin/marketplace.json`, and `.claude-plugin/marketplace.json`.
 - **Core Agent & Skills**: Defined agent instructions and skills for repository scanning and logging recommendations.
 - **Python Scripts**: Added deterministic scanner `collect-repository-context.py` and validator `validate-plugin.py`.

@@ -23,12 +23,14 @@ Modern software development requires strict adherence to security and compliance
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/your-organization/security-logging-copilot-plugin.git
    cd security-logging-copilot-plugin
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
@@ -56,4 +58,3 @@ This repository is optimized for development with the **Antigravity IDE** and **
 ## License
 
 This project is licensed under the **PolyForm Noncommercial License 1.0.0** - see the [LICENSE](LICENSE) file for details.
-

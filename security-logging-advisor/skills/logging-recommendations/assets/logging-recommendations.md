@@ -3,11 +3,13 @@
 Generated on: [ISO UTC Timestamp]
 
 ## 1. Executive Summary and Context
+
 - **Repository Context Summary**: [Context summary based on scan]
 - **Detected Tech Stack & Deployment**: [Tech stack details]
 - **Assumptions & Confidence Levels**: [Assumptions & confidence summary]
 
 ## 2. Environment Calibration Strategy
+
 - **Sandbox**: [Tiered approach for Sandbox (minimal telemetry, cost-sensitive)]
 - **Development**: [Approach for Dev (debug support, short retention)]
 - **Integration**: [Approach for Integration (cross-service boundary checks)]
@@ -17,6 +19,7 @@ Generated on: [ISO UTC Timestamp]
 ## 3. Prioritized Logging Recommendations
 
 ### [Recommendation Title (e.g. Audit User Authentication Events)]
+
 - **Priority**: [Critical / High / Medium / Low]
 - **Logging Tier**: [Minimum viable / Recommended / Enhanced]
 - **Environment Applicability**: [Sandbox, Development, Integration, Performance, Production]
@@ -31,9 +34,11 @@ Generated on: [ISO UTC Timestamp]
   1. [Step 1]
   2. [Step 2]
 - **Example Configuration Snippet**:
+
   ```json
   // Configuration or code snippet
   ```
+
 - **Alerting & Triage**:
   - **Suggested Alert Conditions**: [e.g., 5 failures in 1 minute for same IP/User]
   - **Severity Guidance**: [Critical / High / Medium / Low]
@@ -51,12 +56,14 @@ Generated on: [ISO UTC Timestamp]
 ---
 
 ## 4. Implementation Plan & Order
+
 - **Suggested Implementation Order**: [First dependencies, then high-priority logs]
 - **Implementation Checklist**:
   - [ ] [Task 1]
   - [ ] [Task 2]
 
 ## 5. Cost Notes & SIEM Integration
+
 - **Telemetry Ingestion Cost Safeguards**: [Cost-aware strategies like sampling, retention tiers]
 - **Observability / SIEM Destinations**: [Notes on SIEM, Splunk, Elastic, Sentinel, CloudWatch, etc.]
 - **Data Privacy & Redaction**: [Rules for redacting passwords, PII, raw request payloads]
