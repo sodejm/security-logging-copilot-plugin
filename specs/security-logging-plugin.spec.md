@@ -45,9 +45,10 @@ Provide software development teams with an automated, cost-conscious, and securi
 - **Format Advice**: Direct the implementation of structured JSON logs with correlation IDs.
 - **Alerting Guidance**: Suggest triage rules and alarm criteria for high-priority security failures.
 
-### C. Plugin Validation
+### C. Plugin & Skill Validation
 - Verify JSON formatting of the plugin manifests (`plugin.json`, `marketplace.json`).
 - Ensure all required docs, example templates, and scripts are present in the package before release.
+- Validate that all skill files (`SKILL.md`) adhere to the Agent Skills format specification (naming, frontmatter fields, and nested directory layout).
 
 ---
 
@@ -60,5 +61,6 @@ Provide software development teams with an automated, cost-conscious, and securi
 
 ## 5. Acceptance Criteria
 - [ ] Running `validate-plugin.py` returns code `0` on compliant packages.
-- [ ] Running `collect-repository-context.py` yields a complete JSON map of the codebase without listing any hardcoded credential values.
+- [ ] All `SKILL.md` files pass parsing and verification against the Agent Skills (agentskills.io) frontmatter specification.
+- [ ] Running `skills/repository-context/scripts/collect-repository-context.py` yields a complete JSON map of the codebase without listing any hardcoded credential values.
 - [ ] The generated report matches the fields laid out in the recommendations markdown template.
