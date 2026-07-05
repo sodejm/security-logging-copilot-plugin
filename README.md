@@ -35,11 +35,12 @@ Modern software development requires strict adherence to security and compliance
 
 ## Spec-Driven Development (SDD)
 
-This repository follows a strict **Spec-Driven Development** workflow driven by `spec-kit` to guide development:
+This repository follows a strict **Spec-Driven Development** workflow driven by `spec-kit` and the Kaggle production-grade BDD guidelines to guide development:
 
 - **Constitution**: Project rules, security policies, and standards are defined in [.specify/memory/constitution.md](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/.specify/memory/constitution.md).
 - **Project Context**: The system layout and technologies are documented in [.specify/project-context.md](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/.specify/project-context.md).
-- **Feature Specs**: Feature requirements are modeled as specifications inside the [specs/](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/specs/) directory (e.g., [specs/security-logging-plugin.spec.md](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/specs/security-logging-plugin.spec.md)).
+- **Feature Specs**: High-level requirements are modeled as specifications inside [specs/security-logging-plugin.spec.md](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/specs/security-logging-plugin.spec.md).
+- **Gherkin Features**: Specific, executable scenarios (Given/When/Then) are defined as BDD feature files under [specs/features/](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/specs/features/).
 
 ## Development and IDE Environment
 

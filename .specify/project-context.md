@@ -30,7 +30,10 @@ This document provides a feature-complete snapshot of the repository context to 
 │   └── memory/
 │       └── constitution.md        # Non-negotiable repository rules
 ├── specs/
-│   └── security-logging-plugin.spec.md # Feature specification for the plugin
+│   ├── security-logging-plugin.spec.md # Feature specification for the plugin
+│   └── features/
+│       ├── repository_scanning.feature # BDD features for scanning validation
+│       └── plugin_validation.feature   # BDD features for plugin validator
 ├── security-logging-advisor/
 │   ├── plugin.json                # Plugin definition manifest
 │   ├── CHANGELOG.md               # Version log history

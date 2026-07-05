@@ -29,6 +29,10 @@ REQUIRED_FILES = [
     "security-logging-advisor/CHANGELOG.md",
     ".github/plugin/marketplace.json",
     ".claude-plugin/marketplace.json",
+    ".specify/memory/constitution.md",
+    ".specify/project-context.md",
+    "specs/features/repository_scanning.feature",
+    "specs/features/plugin_validation.feature",
 ]
 
 def check_json_file(file_path, required_keys):
