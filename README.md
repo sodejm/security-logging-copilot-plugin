@@ -51,7 +51,7 @@ This repository is optimized for development with the **Antigravity IDE** and **
 
 ## Authors
 
-- **Justin Soderberg** - [justinsoderberg](https://github.com/justinsoderberg)
+- **Justin Soderberg** - [sodejm](https://github.com/sodejm)
 
 ## License
 
