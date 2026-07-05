@@ -15,7 +15,7 @@ Before approving Pull Requests (PRs) or changes to this repository, verify that:
 ## 2. Release & Versioning Policy
 This plugin follows [Semantic Versioning 2.0.0](https://semver.org/).
 
-1. **Changelog**: Add entry to [CHANGELOG.md](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/security-logging-advisor/CHANGELOG.md).
+1. **Changelog**: Add entry to [CHANGELOG.md](../CHANGELOG.md).
 2. **Version Bump**: Increment version in:
    - `security-logging-advisor/plugin.json`
    - `.github/plugin/marketplace.json`

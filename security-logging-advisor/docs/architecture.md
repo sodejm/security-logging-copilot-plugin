@@ -43,18 +43,18 @@ graph TD
 ## 2. Component Descriptions
 
 ### Manifests & Discovery Metadata
-- **[plugin.json](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/security-logging-advisor/plugin.json)**: The core manifest defining the plugin identity, associated agents, capabilities, modular skills mapping, and file paths to executable scripts.
-- **[.github/plugin/marketplace.json](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/.github/plugin/marketplace.json)**: Standard discovery metadata required by GitHub Copilot Enterprise for internal plugin registry.
-- **[.claude-plugin/marketplace.json](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/.claude-plugin/marketplace.json)**: Configuration manifest supporting registration and discovery inside Claude-compatible plugin tools.
+- **[plugin.json](../plugin.json)**: The core manifest defining the plugin identity, associated agents, capabilities, modular skills mapping, and file paths to executable scripts.
+- **[.github/plugin/marketplace.json](../../.github/plugin/marketplace.json)**: Standard discovery metadata required by GitHub Copilot Enterprise for internal plugin registry.
+- **[.claude-plugin/marketplace.json](../../.claude-plugin/marketplace.json)**: Configuration manifest supporting registration and discovery inside Claude-compatible plugin tools.
 
 ### Agents & Skills Orchestration
-- **[security-logging-advisor.agent.md](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/security-logging-advisor/agents/security-logging-advisor.agent.md)**: Main instruction document defining the agent system persona, operational stages (Context Collection, Clarifying Questions, Gap Analysis, Report Generation), and security boundaries.
-- **[repository-context SKILL.md](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/security-logging-advisor/skills/repository-context/SKILL.md)**: Details instruction guidelines for triggering and utilizing the scanning script to map languages, databases, cloud indicators, and pipelines.
-- **[logging-recommendations SKILL.md](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/security-logging-advisor/skills/logging-recommendations/SKILL.md)**: Directs the agent on evaluating identified technologies against security matrices (OWASP logging guides, MITRE ATT&CK) using environment calibration rules (Sandbox to Production).
+- **[security-logging-advisor.agent.md](../agents/security-logging-advisor.agent.md)**: Main instruction document defining the agent system persona, operational stages (Context Collection, Clarifying Questions, Gap Analysis, Report Generation), and security boundaries.
+- **[repository-context SKILL.md](../skills/repository-context/SKILL.md)**: Details instruction guidelines for triggering and utilizing the scanning script to map languages, databases, cloud indicators, and pipelines.
+- **[logging-recommendations SKILL.md](../skills/logging-recommendations/SKILL.md)**: Directs the agent on evaluating identified technologies against security matrices (OWASP logging guides, MITRE ATT&CK) using environment calibration rules (Sandbox to Production).
 
 ### Automation & Verification Scripts
-- **[collect-repository-context.py](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/security-logging-advisor/scripts/collect-repository-context.py)**: Python scanner executing local static analysis of codebase directories to detect engineering footprints and search for potential secrets exposure.
-- **[validate-plugin.py](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/security-logging-advisor/scripts/validate-plugin.py)**: Pre-release pipeline script ensuring integrity of JSON manifests, file structure requirements, and markdown frontmatter formatting.
+- **[collect-repository-context.py](../scripts/collect-repository-context.py)**: Python scanner executing local static analysis of codebase directories to detect engineering footprints and search for potential secrets exposure.
+- **[validate-plugin.py](../scripts/validate-plugin.py)**: Pre-release pipeline script ensuring integrity of JSON manifests, file structure requirements, and markdown frontmatter formatting.
 
 ---
 

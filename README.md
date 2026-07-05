@@ -37,16 +37,16 @@ Modern software development requires strict adherence to security and compliance
 
 This repository follows a strict **Spec-Driven Development** workflow driven by `spec-kit` and the Kaggle production-grade BDD guidelines to guide development:
 
-- **Constitution**: Project rules, security policies, and standards are defined in [.specify/memory/constitution.md](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/.specify/memory/constitution.md).
-- **Project Context**: The system layout and technologies are documented in [.specify/project-context.md](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/.specify/project-context.md).
-- **Feature Specs**: High-level requirements are modeled as specifications inside [specs/security-logging-plugin.spec.md](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/specs/security-logging-plugin.spec.md).
-- **Gherkin Features**: Specific, executable scenarios (Given/When/Then) are defined as BDD feature files under [specs/features/](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/specs/features/).
+- **Constitution**: Project rules, security policies, and standards are defined in [.specify/memory/constitution.md](.specify/memory/constitution.md).
+- **Project Context**: The system layout and technologies are documented in [.specify/project-context.md](.specify/project-context.md).
+- **Feature Specs**: High-level requirements are modeled as specifications inside [specs/security-logging-plugin.spec.md](specs/security-logging-plugin.spec.md).
+- **Gherkin Features**: Specific, executable scenarios (Given/When/Then) are defined as BDD feature files under [specs/features/](specs/features/).
 
 ## Development and IDE Environment
 
 This repository is optimized for development with the **Antigravity IDE** and **Antigravity 2.0** ecosystem.
 
-- **Workspace Guidelines**: Project-specific rules and agent instructions are defined in [.agents/AGENTS.md](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/.agents/AGENTS.md).
+- **Workspace Guidelines**: Project-specific rules and agent instructions are defined in [.agents/AGENTS.md](.agents/AGENTS.md).
 - **Model Context Protocol (MCP)**: Any custom MCP tools or hooks will be configured in the `.agents/` folder.
 
 ## Authors
@@ -55,5 +55,5 @@ This repository is optimized for development with the **Antigravity IDE** and **
 
 ## License
 
-This project is licensed under the **PolyForm Noncommercial License 1.0.0** - see the [LICENSE](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/LICENSE) file for details.
+This project is licensed under the **PolyForm Noncommercial License 1.0.0** - see the [LICENSE](LICENSE) file for details.
 
