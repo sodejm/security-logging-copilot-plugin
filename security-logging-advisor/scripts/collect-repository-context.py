@@ -75,6 +75,28 @@ def scan_repository(root_dir):
                 results["languages"]["HashiCorp Configuration Language (HCL)"] = results["languages"].get("HashiCorp Configuration Language (HCL)", 0) + 1
                 if "Terraform" not in results["iac_and_cloud"]:
                     results["iac_and_cloud"].append("Terraform")
+            elif ext == ".bicep":
+                results["languages"]["Bicep"] = results["languages"].get("Bicep", 0) + 1
+                if "Azure Bicep" not in results["iac_and_cloud"]:
+                    results["iac_and_cloud"].append("Azure Bicep")
+            elif ext in {".ps1", ".psm1"}:
+                results["languages"]["PowerShell"] = results["languages"].get("PowerShell", 0) + 1
+            elif ext == ".sh":
+                results["languages"]["Shell Script (Bash)"] = results["languages"].get("Shell Script (Bash)", 0) + 1
+            elif ext in {".pl", ".pm"}:
+                results["languages"]["Perl"] = results["languages"].get("Perl", 0) + 1
+            elif ext in {".cs", ".csproj", ".sln"}:
+                results["languages"]["C# (.NET)"] = results["languages"].get("C# (.NET)", 0) + 1
+            elif ext == ".json":
+                # Check for ARM template schema
+                try:
+                    with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+                        header = f.read(1024)
+                        if "schema.management.azure.com" in header:
+                            if "Azure ARM Template" not in results["iac_and_cloud"]:
+                                results["iac_and_cloud"].append("Azure ARM Template")
+                except Exception:
+                    pass
 
             # Project manifests & dependencies detection
             if file == "package.json":
@@ -135,7 +157,7 @@ def scan_repository(root_dir):
                 results["cicd"].append("Jenkins Pipeline")
 
             # File scanning for credentials (text files only)
-            if ext in {".json", ".yaml", ".yml", ".tf", ".conf", ".properties", ".ini", ".env", ".py", ".ts", ".js", ".go", ".java", ".md"}:
+            if ext in {".json", ".yaml", ".yml", ".tf", ".conf", ".properties", ".ini", ".env", ".py", ".ts", ".js", ".go", ".java", ".md", ".bicep", ".ps1", ".psm1", ".sh", ".pl", ".pm", ".cs", ".csproj", ".sln"}:
                 try:
                     with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
                         for line_num, line in enumerate(f, 1):
