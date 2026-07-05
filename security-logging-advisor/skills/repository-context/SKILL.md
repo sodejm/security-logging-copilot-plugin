@@ -21,7 +21,7 @@ Run this skill during the initial stage of workspace analysis.
    - Identity & Authentication systems (JWT, OAuth, Keycloak, Auth0)
    - CI/CD pipelines (GitHub Actions, GitLab CI, Jenkins)
 3. **Data Classification**: Identify sensitive entrypoints, public endpoints, and data flows to map data zones.
-4. **Secrets Detection**: Check for credential patterns (e.g., API keys, passwords, database URLs). Report locations for remediation, but **never** copy or display the secret value.
+4. **Secrets Detection**: Check for credential patterns (e.g., API keys, passwords, database URLs). Report locations for technology context, but **never** copy or display the secret value.
 
 ## Output Generation
 
