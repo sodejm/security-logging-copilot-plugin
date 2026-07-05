@@ -7,12 +7,12 @@ This document provides quick fixes and debugging steps for common issues encount
 - **Fix**: Check that python3 is installed and ensure files are marked executable:
   ```bash
   python3 --version
-  chmod +x security-logging-advisor/scripts/collect-repository-context.py
+  chmod +x security-logging-advisor/skills/repository-context/scripts/collect-repository-context.py
   ```
 - **Symptom**: Large codebase triggers memory pressure or long execution times.
   - **Fix**: Verify that standard directories like `node_modules/`, `.git/`, `venv/`, and build artifacts are excluded in the `collect-repository-context.py` script. You can manually test exclusions by running:
     ```bash
-    python3 security-logging-advisor/scripts/collect-repository-context.py ./your-repo
+    python3 security-logging-advisor/skills/repository-context/scripts/collect-repository-context.py ./your-repo
     ```
 
 ## 2. Manifest/Marketplace Discovery Errors

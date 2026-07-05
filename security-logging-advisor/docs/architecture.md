@@ -53,7 +53,7 @@ graph TD
 - **[logging-recommendations SKILL.md](../skills/logging-recommendations/SKILL.md)**: Directs the agent on evaluating identified technologies against security matrices (OWASP logging guides, MITRE ATT&CK) using environment calibration rules (Sandbox to Production).
 
 ### Automation & Verification Scripts
-- **[collect-repository-context.py](../scripts/collect-repository-context.py)**: Python scanner executing local static analysis of codebase directories to detect engineering footprints and search for potential secrets exposure.
+- **[collect-repository-context.py](../skills/repository-context/scripts/collect-repository-context.py)**: Python scanner executing local static analysis of codebase directories to detect engineering footprints and search for potential secrets exposure.
 - **[validate-plugin.py](../scripts/validate-plugin.py)**: Pre-release pipeline script ensuring integrity of JSON manifests, file structure requirements, and markdown frontmatter formatting.
 
 ---

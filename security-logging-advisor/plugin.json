@@ -34,7 +34,7 @@
     }
   ],
   "entrypoints": {
-    "scan": "scripts/collect-repository-context.py",
+    "scan": "skills/repository-context/scripts/collect-repository-context.py",
     "validate": "scripts/validate-plugin.py"
   }
 }

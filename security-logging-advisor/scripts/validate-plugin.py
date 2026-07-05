@@ -17,10 +17,10 @@ REQUIRED_FILES = [
     "security-logging-advisor/agents/security-logging-advisor.agent.md",
     "security-logging-advisor/skills/repository-context/SKILL.md",
     "security-logging-advisor/skills/logging-recommendations/SKILL.md",
-    "security-logging-advisor/scripts/collect-repository-context.py",
+    "security-logging-advisor/skills/repository-context/scripts/collect-repository-context.py",
     "security-logging-advisor/scripts/validate-plugin.py",
-    "security-logging-advisor/templates/repository-context.md",
-    "security-logging-advisor/templates/logging-recommendations.md",
+    "security-logging-advisor/skills/repository-context/assets/repository-context.md",
+    "security-logging-advisor/skills/logging-recommendations/assets/logging-recommendations.md",
     "security-logging-advisor/docs/INSTALL.md",
     "security-logging-advisor/docs/ENTERPRISE_ROLLOUT.md",
     "security-logging-advisor/docs/SECURITY_PRIVACY.md",
@@ -55,7 +55,7 @@ def check_json_file(file_path, required_keys):
     return errors
 
 def check_skill_markdown(file_path):
-    """Validates that a SKILL.md file has a valid YAML frontmatter containing 'name' and 'description'."""
+    """Validates that a SKILL.md file has a valid YAML frontmatter adhering to the agentskills.io spec."""
     if not os.path.isfile(file_path):
         return [f"File {file_path} is missing."]
     
@@ -63,20 +63,105 @@ def check_skill_markdown(file_path):
     try:
         with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
-            # Frontmatter regex: matches standard YAML block bounded by ---
-            match = re.match(r"^---\s*\n(.*?)\n---\s*\n", content, re.DOTALL)
-            if not match:
-                errors.append(f"Skill file {file_path} does not contain standard YAML frontmatter bounded by ---")
-                return errors
             
-            frontmatter_text = match.group(1)
-            name_match = re.search(r"^name:\s*(.+)$", frontmatter_text, re.MULTILINE)
-            desc_match = re.search(r"^description:\s*(.+)$", frontmatter_text, re.MULTILINE)
+        # Match standard YAML block bounded by ---
+        match = re.match(r"^---\s*\n(.*?)\n---\s*(?:\n|$)", content, re.DOTALL)
+        if not match:
+            errors.append(f"Skill file {file_path} does not contain standard YAML frontmatter bounded by ---")
+            return errors
+        
+        frontmatter_text = match.group(1)
+        lines = frontmatter_text.splitlines()
+        yaml_data = {}
+        in_metadata = False
+        metadata_dict = {}
+        
+        for line_num, line in enumerate(lines, 1):
+            stripped = line.strip()
+            if not stripped or stripped.startswith("#"):
+                continue
             
-            if not name_match:
-                errors.append(f"Skill file {file_path} frontmatter is missing 'name'")
-            if not desc_match:
-                errors.append(f"Skill file {file_path} frontmatter is missing 'description'")
+            # Check indentation
+            indent = len(line) - len(line.lstrip())
+            
+            if in_metadata:
+                if indent > 0:
+                    meta_match = re.match(r"^([\w-]+):\s*(.+)$", stripped)
+                    if meta_match:
+                        k, v = meta_match.group(1), meta_match.group(2).strip()
+                        if (v.startswith('"') and v.endswith('"')) or (v.startswith("'") and v.endswith("'")):
+                            v = v[1:-1]
+                        metadata_dict[k] = v
+                    else:
+                        errors.append(f"Skill file {file_path}: Invalid metadata entry at line {line_num}: '{line}'")
+                    continue
+                else:
+                    in_metadata = False
+                    yaml_data["metadata"] = metadata_dict
+            
+            kv_match = re.match(r"^([\w-]+):\s*(.*)$", stripped)
+            if not kv_match:
+                errors.append(f"Skill file {file_path}: Invalid frontmatter YAML syntax at line {line_num}: '{line}'")
+                continue
+                
+            key, val = kv_match.group(1), kv_match.group(2).strip()
+            if (val.startswith('"') and val.endswith('"')) or (val.startswith("'") and val.endswith("'")):
+                val = val[1:-1]
+                
+            if key == "metadata":
+                if val == "":
+                    in_metadata = True
+                    metadata_dict = {}
+                else:
+                    errors.append(f"Skill file {file_path}: metadata field must start a nested dictionary block")
+            else:
+                yaml_data[key] = val
+                
+        if in_metadata:
+            yaml_data["metadata"] = metadata_dict
+            
+        # Validate name
+        if "name" not in yaml_data:
+            errors.append(f"Skill file {file_path} frontmatter is missing 'name'")
+        else:
+            name = yaml_data["name"]
+            if not (1 <= len(name) <= 64):
+                errors.append(f"Skill file {file_path} 'name' length must be between 1 and 64 characters (current length: {len(name)})")
+            if not re.match(r"^[a-z0-9]+(-[a-z0-9]+)*$", name):
+                errors.append(f"Skill file {file_path} 'name' ('{name}') must only contain lowercase alphanumeric characters and hyphens, and must not start, end, or have consecutive hyphens")
+            
+            parent_dir = os.path.basename(os.path.dirname(file_path))
+            if name != parent_dir:
+                errors.append(f"Skill file {file_path} 'name' ('{name}') must match the parent directory name ('{parent_dir}')")
+                
+        # Validate description
+        if "description" not in yaml_data:
+            errors.append(f"Skill file {file_path} frontmatter is missing 'description'")
+        else:
+            description = yaml_data["description"]
+            if not (1 <= len(description) <= 1024):
+                errors.append(f"Skill file {file_path} 'description' length must be between 1 and 1024 characters (current length: {len(description)})")
+                
+        # Validate optional fields
+        valid_keys = {"name", "description", "license", "compatibility", "metadata", "allowed-tools"}
+        for key in yaml_data:
+            if key not in valid_keys:
+                errors.append(f"Skill file {file_path} frontmatter contains invalid/unknown key: '{key}'")
+                
+        if "compatibility" in yaml_data:
+            compatibility = yaml_data["compatibility"]
+            if not (1 <= len(compatibility) <= 500):
+                errors.append(f"Skill file {file_path} 'compatibility' length must be between 1 and 500 characters (current length: {len(compatibility)})")
+                
+        if "metadata" in yaml_data:
+            meta = yaml_data["metadata"]
+            if not isinstance(meta, dict):
+                errors.append(f"Skill file {file_path} 'metadata' must be a key-value mapping")
+            else:
+                for k, v in meta.items():
+                    if not isinstance(k, str) or not isinstance(v, str):
+                        errors.append(f"Skill file {file_path} 'metadata' entry ('{k}': '{v}') must have string keys and values")
+                        
     except Exception as e:
         errors.append(f"Error reading skill file {file_path}: {str(e)}")
         

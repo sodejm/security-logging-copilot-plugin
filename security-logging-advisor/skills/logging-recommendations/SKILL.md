@@ -28,4 +28,4 @@ Run this skill after the repository context has been collected and user clarific
 
 ## Output Generation
 
-Output the final report to `docs/security/logging-recommendations.md` matching the layout in `templates/logging-recommendations.md`.
+Output the final report to `docs/security/logging-recommendations.md` matching the layout in `assets/logging-recommendations.md`.

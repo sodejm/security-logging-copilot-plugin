@@ -25,4 +25,4 @@ Run this skill during the initial stage of workspace analysis.
 
 ## Output Generation
 
-Save the output of this scan as a JSON/markdown payload matching the schema defined in `templates/repository-context.md`.
+Save the output of this scan as a JSON/markdown payload matching the schema defined in `assets/repository-context.md`.

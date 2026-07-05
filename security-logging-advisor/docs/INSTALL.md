@@ -46,5 +46,5 @@ Verify the installation by running the validation or context commands:
 python3 security-logging-advisor/scripts/validate-plugin.py
 
 # Run a sample context collection on your active repository
-python3 security-logging-advisor/scripts/collect-repository-context.py .
+python3 security-logging-advisor/skills/repository-context/scripts/collect-repository-context.py .
 ```
