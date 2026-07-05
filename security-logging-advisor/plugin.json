@@ -3,7 +3,7 @@
   "name": "Security Logging Advisor",
   "version": "1.0.0",
   "description": "Enterprise-grade GitHub Copilot plugin for repository security logging analysis and recommendation generation.",
-  "publisher": "Enterprise Security Engineering",
+  "publisher": "Justin Soderberg",
   "engines": {
     "copilot": "^1.0.0"
   },

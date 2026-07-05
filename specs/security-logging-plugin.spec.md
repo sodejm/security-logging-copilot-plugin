@@ -32,7 +32,7 @@ Provide software development teams with an automated, cost-conscious, and securi
   - Perl (`.pl`, `.pm`)
   - C# / .NET / dotnet (`.cs`, `.csproj`, `.sln`)
 - **Supported Cloud & IaC Detections**: Scan configuration, packages, and infra files to identify:
-  - **AWS**: Amazon Web Services (via HCL, Docker base, or NPM/pip dependencies)
+  - **AWS**: Amazon Web Services (via HCL, Docker base, BICEP, ARM, or NPM/pip dependencies)
   - **GCP**: Google Cloud Platform (via HCL, NPM/pip dependencies)
   - **Azure**: Microsoft Azure (via Bicep, ARM templates, HCL, or dependencies)
   - **Oracle Cloud**: Oracle Cloud Infrastructure / OCI (via HCL, NPM/pip dependencies)

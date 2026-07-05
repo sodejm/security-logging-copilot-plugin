@@ -49,6 +49,10 @@ This repository is optimized for development with the **Antigravity IDE** and **
 - **Workspace Guidelines**: Project-specific rules and agent instructions are defined in [.agents/AGENTS.md](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/.agents/AGENTS.md).
 - **Model Context Protocol (MCP)**: Any custom MCP tools or hooks will be configured in the `.agents/` folder.
 
+## Authors
+
+- **Justin Soderberg** - [justinsoderberg](https://github.com/justinsoderberg)
+
 ## License
 
 This project is licensed under the **PolyForm Noncommercial License 1.0.0** - see the [LICENSE](file:///Users/justinsoderberg/Development/security-logging-copilot-plugin/LICENSE) file for details.
