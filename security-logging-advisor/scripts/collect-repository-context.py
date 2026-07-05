@@ -75,6 +75,23 @@ def scan_repository(root_dir):
                 results["languages"]["HashiCorp Configuration Language (HCL)"] = results["languages"].get("HashiCorp Configuration Language (HCL)", 0) + 1
                 if "Terraform" not in results["iac_and_cloud"]:
                     results["iac_and_cloud"].append("Terraform")
+                try:
+                    with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+                        content = f.read()
+                        if "aws_" in content:
+                            if "AWS" not in results["iac_and_cloud"]:
+                                results["iac_and_cloud"].append("AWS")
+                        if "google_" in content:
+                            if "GCP" not in results["iac_and_cloud"]:
+                                results["iac_and_cloud"].append("GCP")
+                        if "azurerm_" in content or "azure_" in content:
+                            if "Azure" not in results["iac_and_cloud"]:
+                                results["iac_and_cloud"].append("Azure")
+                        if "oci_" in content:
+                            if "Oracle Cloud" not in results["iac_and_cloud"]:
+                                results["iac_and_cloud"].append("Oracle Cloud")
+                except Exception:
+                    pass
             elif ext == ".bicep":
                 results["languages"]["Bicep"] = results["languages"].get("Bicep", 0) + 1
                 if "Azure Bicep" not in results["iac_and_cloud"]:
@@ -114,6 +131,18 @@ def scan_repository(root_dir):
                                 results["identity_and_auth"].append(f"Node.js Auth: {dep}")
                             if dep in {"winston", "pino", "bunyan", "morgan"}:
                                 results["frameworks_and_libraries"].append(f"Logging Library: {dep}")
+                            if "aws-sdk" in dep or "@aws-sdk" in dep:
+                                if "AWS" not in results["iac_and_cloud"]:
+                                    results["iac_and_cloud"].append("AWS")
+                            if "google-cloud" in dep or "@google-cloud" in dep:
+                                if "GCP" not in results["iac_and_cloud"]:
+                                    results["iac_and_cloud"].append("GCP")
+                            if "azure" in dep or "@azure" in dep:
+                                if "Azure" not in results["iac_and_cloud"]:
+                                    results["iac_and_cloud"].append("Azure")
+                            if "oci" in dep:
+                                if "Oracle Cloud" not in results["iac_and_cloud"]:
+                                    results["iac_and_cloud"].append("Oracle Cloud")
                 except Exception:
                     pass
 
@@ -133,6 +162,18 @@ def scan_repository(root_dir):
                             results["identity_and_auth"].append("Python Auth Library")
                         if "structlog" in content.lower():
                             results["frameworks_and_libraries"].append("Logging Library: structlog")
+                        if "boto3" in content.lower() or "aws" in content.lower():
+                            if "AWS" not in results["iac_and_cloud"]:
+                                results["iac_and_cloud"].append("AWS")
+                        if "google-cloud" in content.lower():
+                            if "GCP" not in results["iac_and_cloud"]:
+                                results["iac_and_cloud"].append("GCP")
+                        if "azure" in content.lower():
+                            if "Azure" not in results["iac_and_cloud"]:
+                                results["iac_and_cloud"].append("Azure")
+                        if "oci" in content.lower():
+                            if "Oracle Cloud" not in results["iac_and_cloud"]:
+                                results["iac_and_cloud"].append("Oracle Cloud")
                 except Exception:
                     pass
 

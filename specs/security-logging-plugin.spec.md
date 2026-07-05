@@ -20,7 +20,22 @@ Provide software development teams with an automated, cost-conscious, and securi
 ## 3. Functional Requirements
 
 ### A. Repository Context Scanning
-- **Technology Detection**: Auto-detect programming languages (Python, Go, JS/TS, Java) and frameworks (Express, Flask, Django).
+- **Supported Languages**: Auto-detect files and analyze code patterns for:
+  - TypeScript / JavaScript (`.ts`, `.tsx`, `.js`, `.jsx`)
+  - Python (`.py`)
+  - Go (`.go`)
+  - Java (`.java`)
+  - HashiCorp Configuration Language / HCL (`.tf`, `.tfvars`)
+  - Bicep (`.bicep`)
+  - PowerShell (`.ps1`, `.psm1`)
+  - Shell Script / Bash (`.sh`)
+  - Perl (`.pl`, `.pm`)
+  - C# / .NET / dotnet (`.cs`, `.csproj`, `.sln`)
+- **Supported Cloud & IaC Detections**: Scan configuration, packages, and infra files to identify:
+  - **AWS**: Amazon Web Services (via HCL, Docker base, or NPM/pip dependencies)
+  - **GCP**: Google Cloud Platform (via HCL, NPM/pip dependencies)
+  - **Azure**: Microsoft Azure (via Bicep, ARM templates, HCL, or dependencies)
+  - **Oracle Cloud**: Oracle Cloud Infrastructure / OCI (via HCL, NPM/pip dependencies)
 - **IaC & Containers**: Detect Docker, Kubernetes, Helm, and Terraform indicators.
 - **Data Zones**: Map databases (Redis, Postgres, Mongo) and authentication providers.
 - **Secrets Audit**: Scan config files for credentials, reporting their file and line locations while strictly redacting/hiding the credential values.
