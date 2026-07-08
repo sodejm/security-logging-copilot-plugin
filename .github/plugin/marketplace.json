@@ -1,6 +1,7 @@
 {
   "id": "security-logging-advisor",
-  "name": "Security Logging Advisor",
+  "name": "security-logging-advisor",
+"owner":"sodejm"
   "version": "1.0.0",
   "publisher": "enterprise-security-engineering",
   "displayName": "Security Logging Advisor",
