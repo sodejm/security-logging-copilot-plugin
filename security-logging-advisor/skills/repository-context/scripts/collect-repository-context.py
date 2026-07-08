@@ -29,6 +29,9 @@ SECRETS_PATTERNS = {
     "Database Connection String": re.compile(r"(mongodb(?:\+srv)?|postgres|mysql|redis):\/\/[a-zA-Z0-9_]+:[^@]+@[a-zA-Z0-9_\-\.]+"),
 }
 
+MAX_FILES_TO_SCAN = 10000
+MAX_FILE_SIZE_BYTES = 1 * 1024 * 1024 # 1 MB
+
 def is_ignored(path, root_dir):
     """Checks if a given path should be ignored."""
     parts = os.path.relpath(path, root_dir).split(os.sep)
@@ -55,12 +58,24 @@ def scan_repository(root_dir):
     for root, dirs, files in os.walk(root_dir):
         if is_ignored(root, root_dir):
             continue
+            
+        if results["scanned_files_count"] >= MAX_FILES_TO_SCAN:
+            break
 
         for file in files:
+            if results["scanned_files_count"] >= MAX_FILES_TO_SCAN:
+                break
+                
             file_path = os.path.join(root, file)
             rel_path = os.path.relpath(file_path, root_dir)
+            
+            try:
+                file_size = os.path.getsize(file_path)
+            except OSError:
+                continue
+                
             results["scanned_files_count"] += 1
-
+            
             # Language and core tech detection
             ext = os.path.splitext(file)[1].lower()
             if ext in {".ts", ".tsx", ".js", ".jsx"}:
@@ -75,23 +90,24 @@ def scan_repository(root_dir):
                 results["languages"]["HashiCorp Configuration Language (HCL)"] = results["languages"].get("HashiCorp Configuration Language (HCL)", 0) + 1
                 if "Terraform" not in results["iac_and_cloud"]:
                     results["iac_and_cloud"].append("Terraform")
-                try:
-                    with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
-                        content = f.read()
-                        if "aws_" in content:
-                            if "AWS" not in results["iac_and_cloud"]:
-                                results["iac_and_cloud"].append("AWS")
-                        if "google_" in content:
-                            if "GCP" not in results["iac_and_cloud"]:
-                                results["iac_and_cloud"].append("GCP")
-                        if "azurerm_" in content or "azure_" in content:
-                            if "Azure" not in results["iac_and_cloud"]:
-                                results["iac_and_cloud"].append("Azure")
-                        if "oci_" in content:
-                            if "Oracle Cloud" not in results["iac_and_cloud"]:
-                                results["iac_and_cloud"].append("Oracle Cloud")
-                except Exception:
-                    pass
+                if file_size <= MAX_FILE_SIZE_BYTES:
+                    try:
+                        with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+                            for line in f:
+                                if "aws_" in line or "provider \"aws\"" in line or "provider 'aws'" in line:
+                                    if "AWS" not in results["iac_and_cloud"]:
+                                        results["iac_and_cloud"].append("AWS")
+                                if "google_" in line:
+                                    if "GCP" not in results["iac_and_cloud"]:
+                                        results["iac_and_cloud"].append("GCP")
+                                if "azurerm_" in line or "azure_" in line:
+                                    if "Azure" not in results["iac_and_cloud"]:
+                                        results["iac_and_cloud"].append("Azure")
+                                if "oci_" in line:
+                                    if "Oracle Cloud" not in results["iac_and_cloud"]:
+                                        results["iac_and_cloud"].append("Oracle Cloud")
+                    except Exception:
+                        pass
             elif ext == ".bicep":
                 results["languages"]["Bicep"] = results["languages"].get("Bicep", 0) + 1
                 if "Azure Bicep" not in results["iac_and_cloud"]:
@@ -104,78 +120,103 @@ def scan_repository(root_dir):
                 results["languages"]["Perl"] = results["languages"].get("Perl", 0) + 1
             elif ext in {".cs", ".csproj", ".sln"}:
                 results["languages"]["C# (.NET)"] = results["languages"].get("C# (.NET)", 0) + 1
+            elif ext == ".rs":
+                results["languages"]["Rust"] = results["languages"].get("Rust", 0) + 1
+            elif ext in {".c", ".cpp", ".h", ".hpp"}:
+                results["languages"]["C/C++"] = results["languages"].get("C/C++", 0) + 1
+            elif ext == ".rb":
+                results["languages"]["Ruby"] = results["languages"].get("Ruby", 0) + 1
+            elif ext == ".php":
+                results["languages"]["PHP"] = results["languages"].get("PHP", 0) + 1
+            elif ext == ".swift":
+                results["languages"]["Swift"] = results["languages"].get("Swift", 0) + 1
+            elif ext == ".kt":
+                results["languages"]["Kotlin"] = results["languages"].get("Kotlin", 0) + 1
+            elif ext == ".scala":
+                results["languages"]["Scala"] = results["languages"].get("Scala", 0) + 1
             elif ext == ".json":
-                # Check for ARM template schema
-                try:
-                    with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
-                        header = f.read(1024)
-                        if "schema.management.azure.com" in header:
-                            if "Azure ARM Template" not in results["iac_and_cloud"]:
-                                results["iac_and_cloud"].append("Azure ARM Template")
-                except Exception:
-                    pass
+                if file_size <= MAX_FILE_SIZE_BYTES:
+                    try:
+                        with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+                            header = f.read(1024)
+                            if "schema.management.azure.com" in header:
+                                if "Azure ARM Template" not in results["iac_and_cloud"]:
+                                    results["iac_and_cloud"].append("Azure ARM Template")
+                    except Exception:
+                        pass
 
             # Project manifests & dependencies detection
-            if file == "package.json":
-                try:
-                    with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
-                        data = json.load(f)
-                        deps = {**data.get("dependencies", {}), **data.get("devDependencies", {})}
-                        # Scan dependencies for libraries
-                        for dep in deps:
-                            if dep in {"express", "koa", "nest", "fastify"}:
-                                results["frameworks_and_libraries"].append(f"Node.js Framework: {dep}")
-                            if dep in {"pg", "mysql2", "mongoose", "redis", "ioredis", "sequelize", "typeorm"}:
-                                results["databases"].append(f"Node.js DB Client: {dep}")
-                            if dep in {"jsonwebtoken", "passport", "auth0", "keycloak-connect", "firebase-admin"}:
-                                results["identity_and_auth"].append(f"Node.js Auth: {dep}")
-                            if dep in {"winston", "pino", "bunyan", "morgan"}:
-                                results["frameworks_and_libraries"].append(f"Logging Library: {dep}")
-                            if "aws-sdk" in dep or "@aws-sdk" in dep:
-                                if "AWS" not in results["iac_and_cloud"]:
-                                    results["iac_and_cloud"].append("AWS")
-                            if "google-cloud" in dep or "@google-cloud" in dep:
-                                if "GCP" not in results["iac_and_cloud"]:
-                                    results["iac_and_cloud"].append("GCP")
-                            if "azure" in dep or "@azure" in dep:
-                                if "Azure" not in results["iac_and_cloud"]:
-                                    results["iac_and_cloud"].append("Azure")
-                            if "oci" in dep:
-                                if "Oracle Cloud" not in results["iac_and_cloud"]:
-                                    results["iac_and_cloud"].append("Oracle Cloud")
-                except Exception:
-                    pass
+            if file_size <= MAX_FILE_SIZE_BYTES:
+                if file == "package.json":
+                    try:
+                        with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+                            data = json.load(f)
+                            deps = {**data.get("dependencies", {}), **data.get("devDependencies", {})}
+                            for dep in deps:
+                                if dep in {"express", "koa", "nest", "fastify"}:
+                                    results["frameworks_and_libraries"].append(f"Node.js Framework: {dep}")
+                                if dep in {"pg", "mysql2", "mongoose", "redis", "ioredis", "sequelize", "typeorm"}:
+                                    results["databases"].append(f"Node.js DB Client: {dep}")
+                                if dep in {"jsonwebtoken", "passport", "auth0", "keycloak-connect", "firebase-admin"}:
+                                    results["identity_and_auth"].append(f"Node.js Auth: {dep}")
+                                if dep in {"winston", "pino", "bunyan", "morgan"}:
+                                    results["frameworks_and_libraries"].append(f"Logging Library: {dep}")
+                                if "aws-sdk" in dep or "@aws-sdk" in dep:
+                                    if "AWS" not in results["iac_and_cloud"]:
+                                        results["iac_and_cloud"].append("AWS")
+                                if "google-cloud" in dep or "@google-cloud" in dep:
+                                    if "GCP" not in results["iac_and_cloud"]:
+                                        results["iac_and_cloud"].append("GCP")
+                                if "azure" in dep or "@azure" in dep:
+                                    if "Azure" not in results["iac_and_cloud"]:
+                                        results["iac_and_cloud"].append("Azure")
+                                if "oci" in dep:
+                                    if "Oracle Cloud" not in results["iac_and_cloud"]:
+                                        results["iac_and_cloud"].append("Oracle Cloud")
+                    except Exception:
+                        pass
 
-            elif file == "requirements.txt" or file == "Pipfile" or file == "pyproject.toml":
-                try:
-                    with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
-                        content = f.read()
-                        if "django" in content.lower():
-                            results["frameworks_and_libraries"].append("Python Framework: Django")
-                        if "flask" in content.lower():
-                            results["frameworks_and_libraries"].append("Python Framework: Flask")
-                        if "fastapi" in content.lower():
-                            results["frameworks_and_libraries"].append("Python Framework: FastAPI")
-                        if "sqlalchemy" in content.lower() or "psycopg2" in content.lower() or "pymongo" in content.lower() or "redis" in content.lower():
-                            results["databases"].append("Python DB Client")
-                        if "jwt" in content.lower() or "oauth" in content.lower() or "auth0" in content.lower():
-                            results["identity_and_auth"].append("Python Auth Library")
-                        if "structlog" in content.lower():
-                            results["frameworks_and_libraries"].append("Logging Library: structlog")
-                        if "boto3" in content.lower() or "aws" in content.lower():
-                            if "AWS" not in results["iac_and_cloud"]:
-                                results["iac_and_cloud"].append("AWS")
-                        if "google-cloud" in content.lower():
-                            if "GCP" not in results["iac_and_cloud"]:
-                                results["iac_and_cloud"].append("GCP")
-                        if "azure" in content.lower():
-                            if "Azure" not in results["iac_and_cloud"]:
-                                results["iac_and_cloud"].append("Azure")
-                        if "oci" in content.lower():
-                            if "Oracle Cloud" not in results["iac_and_cloud"]:
-                                results["iac_and_cloud"].append("Oracle Cloud")
-                except Exception:
-                    pass
+                elif file == "requirements.txt" or file == "Pipfile" or file == "pyproject.toml":
+                    try:
+                        with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+                            for line in f:
+                                l = line.lower()
+                                if "django" in l:
+                                    results["frameworks_and_libraries"].append("Python Framework: Django")
+                                if "flask" in l:
+                                    results["frameworks_and_libraries"].append("Python Framework: Flask")
+                                if "fastapi" in l:
+                                    results["frameworks_and_libraries"].append("Python Framework: FastAPI")
+                                if "sqlalchemy" in l or "psycopg2" in l or "pymongo" in l or "redis" in l:
+                                    results["databases"].append("Python DB Client")
+                                if "jwt" in l or "oauth" in l or "auth0" in l:
+                                    results["identity_and_auth"].append("Python Auth Library")
+                                if "structlog" in l:
+                                    results["frameworks_and_libraries"].append("Logging Library: structlog")
+                                if "boto3" in l or "aws" in l:
+                                    if "AWS" not in results["iac_and_cloud"]:
+                                        results["iac_and_cloud"].append("AWS")
+                                if "google-cloud" in l:
+                                    if "GCP" not in results["iac_and_cloud"]:
+                                        results["iac_and_cloud"].append("GCP")
+                                if "azure" in l:
+                                    if "Azure" not in results["iac_and_cloud"]:
+                                        results["iac_and_cloud"].append("Azure")
+                                if "oci" in l:
+                                    if "Oracle Cloud" not in results["iac_and_cloud"]:
+                                        results["iac_and_cloud"].append("Oracle Cloud")
+                    except Exception:
+                        pass
+                
+                elif file == "pom.xml" or file == "build.gradle":
+                    try:
+                        with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+                            for line in f:
+                                if "spring-boot" in line:
+                                    if "Java Framework: Spring Boot" not in results["frameworks_and_libraries"]:
+                                        results["frameworks_and_libraries"].append("Java Framework: Spring Boot")
+                    except Exception:
+                        pass
 
             # IaC, Containers and Configs
             if file == "Dockerfile":
@@ -198,21 +239,29 @@ def scan_repository(root_dir):
                 results["cicd"].append("Jenkins Pipeline")
 
             # File scanning for credentials (text files only)
-            if ext in {".json", ".yaml", ".yml", ".tf", ".conf", ".properties", ".ini", ".env", ".py", ".ts", ".js", ".go", ".java", ".md", ".bicep", ".ps1", ".psm1", ".sh", ".pl", ".pm", ".cs", ".csproj", ".sln"}:
-                try:
-                    with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
-                        for line_num, line in enumerate(f, 1):
-                            for name, pattern in SECRETS_PATTERNS.items():
-                                if pattern.search(line):
-                                    # Masked alert log entry
-                                    results["secrets_findings"].append({
-                                        "file": rel_path,
-                                        "line": line_num,
-                                        "issue_type": f"Potential {name} detected",
-                                        "remediation": "Do not commit plain text secrets. Move key/credentials to vault/secrets manager or set as environment variables."
-                                    })
-                except Exception:
-                    pass
+            if ext in {".json", ".yaml", ".yml", ".tf", ".conf", ".properties", ".ini", ".env", ".py", ".ts", ".js", ".go", ".java", ".md", ".bicep", ".ps1", ".psm1", ".sh", ".pl", ".pm", ".cs", ".csproj", ".sln", ".rs", ".c", ".cpp", ".rb", ".php", ".swift", ".kt", ".scala"}:
+                if file_size <= MAX_FILE_SIZE_BYTES:
+                    try:
+                        with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+                            for line_num, line in enumerate(f, 1):
+                                for name, pattern in SECRETS_PATTERNS.items():
+                                    if pattern.search(line):
+                                        # Masked alert log entry
+                                        results["secrets_findings"].append({
+                                            "file": rel_path,
+                                            "line": line_num,
+                                            "issue_type": f"Potential {name} detected",
+                                            "remediation": "Do not commit plain text secrets. Move key/credentials to vault/secrets manager or set as environment variables."
+                                        })
+                    except Exception:
+                        pass
+
+    # Deduplicate arrays
+    results["frameworks_and_libraries"] = list(set(results["frameworks_and_libraries"]))
+    results["databases"] = list(set(results["databases"]))
+    results["identity_and_auth"] = list(set(results["identity_and_auth"]))
+    results["iac_and_cloud"] = list(set(results["iac_and_cloud"]))
+    results["cicd"] = list(set(results["cicd"]))
 
     return results
 

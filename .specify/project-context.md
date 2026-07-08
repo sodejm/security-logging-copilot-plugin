@@ -58,8 +58,11 @@ This document provides a feature-complete snapshot of the repository context to 
 │   └── templates/                 # Output context and recommendations layouts
 │       ├── logging-recommendations.md
 │       └── repository-context.md
+├── tests/                         # BDD test suite
+│   └── step_defs/                 # Pytest BDD scripts
 ├── LICENSE                        # PolyForm Noncommercial 1.0.0 license
 ├── README.md                      # General introduction
+├── requirements.txt               # Python dependencies
 └── .gitignore                     # Git tracking exclusions
 ```
 

@@ -12,15 +12,9 @@ import sys
 import json
 import re
 
-REQUIRED_FILES = [
+REQUIRED_STATIC_FILES = [
     "security-logging-advisor/plugin.json",
     "security-logging-advisor/agents/security-logging-advisor.agent.md",
-    "security-logging-advisor/skills/repository-context/SKILL.md",
-    "security-logging-advisor/skills/logging-recommendations/SKILL.md",
-    "security-logging-advisor/skills/repository-context/scripts/collect-repository-context.py",
-    "security-logging-advisor/scripts/validate-plugin.py",
-    "security-logging-advisor/skills/repository-context/assets/repository-context.md",
-    "security-logging-advisor/skills/logging-recommendations/assets/logging-recommendations.md",
     "security-logging-advisor/docs/INSTALL.md",
     "security-logging-advisor/docs/ENTERPRISE_ROLLOUT.md",
     "security-logging-advisor/docs/SECURITY_PRIVACY.md",
@@ -171,8 +165,8 @@ def main():
     print("Starting plugin verification and validation...")
     errors = []
     
-    # 1. Check file existence
-    for path in REQUIRED_FILES:
+    # 1. Check static file existence
+    for path in REQUIRED_STATIC_FILES:
         if not os.path.exists(path):
             errors.append(f"Missing required file/path: {path}")
             
@@ -191,11 +185,19 @@ def main():
     claude_keys = ["id", "name", "version", "compatibility"]
     errors.extend(check_json_file(claude_marketplace, claude_keys))
     
-    # 5. Validate skill markdown frontmatter
-    skills = [
-        "security-logging-advisor/skills/repository-context/SKILL.md",
-        "security-logging-advisor/skills/logging-recommendations/SKILL.md"
-    ]
+    # 5. Dynamically validate skill markdown frontmatter based on plugin.json
+    skills = []
+    if os.path.exists(plugin_manifest):
+        try:
+            with open(plugin_manifest, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                for skill in data.get("skills", []):
+                    path = skill.get("path")
+                    if path:
+                        skills.append(f"security-logging-advisor/{path}/SKILL.md")
+        except Exception as e:
+            errors.append(f"Could not parse plugin.json to find skills: {e}")
+            
     for skill in skills:
         errors.extend(check_skill_markdown(skill))
         

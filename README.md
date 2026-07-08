@@ -32,8 +32,19 @@ Modern software development requires strict adherence to security and compliance
 2. Install dependencies:
 
    ```bash
-   npm install
+   python3 -m venv .venv
+   source .venv/bin/activate
+   pip3 install -r requirements.txt
    ```
+
+### Running Tests
+
+To execute the BDD feature specs, run:
+
+```bash
+source .venv/bin/activate
+pytest tests/step_defs/
+```
 
 ## Spec-Driven Development (SDD)
 

@@ -26,13 +26,20 @@ Provide software development teams with an automated, cost-conscious, and securi
   - TypeScript / JavaScript (`.ts`, `.tsx`, `.js`, `.jsx`)
   - Python (`.py`)
   - Go (`.go`)
-  - Java (`.java`)
+  - Java (`.java`, `pom.xml`, `build.gradle`)
   - HashiCorp Configuration Language / HCL (`.tf`, `.tfvars`)
   - Bicep (`.bicep`)
   - PowerShell (`.ps1`, `.psm1`)
   - Shell Script / Bash (`.sh`)
   - Perl (`.pl`, `.pm`)
   - C# / .NET / dotnet (`.cs`, `.csproj`, `.sln`)
+  - C/C++ (`.c`, `.cpp`, `.h`, `.hpp`)
+  - Rust (`.rs`)
+  - Ruby (`.rb`, `Gemfile`)
+  - PHP (`.php`, `composer.json`)
+  - Swift (`.swift`)
+  - Kotlin (`.kt`)
+  - Scala (`.scala`)
 - **Supported Cloud & IaC Detections**: Scan configuration, packages, and infra files to identify:
   - **AWS**: Amazon Web Services (via HCL, Docker base, BICEP, ARM, or NPM/pip dependencies)
   - **GCP**: Google Cloud Platform (via HCL, NPM/pip dependencies)
@@ -61,6 +68,7 @@ Provide software development teams with an automated, cost-conscious, and securi
 - **Local Boundary**: All scanning logic must run locally to protect intellectual property. Code contents must not be sent to external hosts.
 - **License Compliance**: The software must execute under the **PolyForm Noncommercial License 1.0.0**, blocking use in commercial products.
 - **Zero-Dependency Core**: Validation and scanning scripts must run using standard libraries in Python 3.
+- **Circuit Breakers**: The scanner must not crash on massive repositories or single large log files. It will skip files over 1MB and stop scanning after 10,000 files to conserve memory.
 
 ---
 
