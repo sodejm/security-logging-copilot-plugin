@@ -57,8 +57,8 @@ Provide software development teams with an automated, cost-conscious, and securi
 
 ### C. Plugin & Skill Validation
 
-- Verify JSON formatting of the plugin manifests (`plugin.json`, `marketplace.json`).
-- Ensure all required docs, example templates, and scripts are present in the package before release.
+- Verify JSON formatting of the plugin manifests (`plugin.json`, `plugins.json`, and `marketplace.json`).
+- Ensure all required docs, example templates, scripts, and the slash command definition (`commands/security-logging-advisor.md`) are present in the package before release.
 - Validate that all skill files (`SKILL.md`) strictly adhere to the **Agent Skills standard** ([agentskills.io](https://agentskills.io)) to ensure compatibility, specifically verifying naming conventions, frontmatter fields (YAML), and the nested directory layout.
 
 ---
@@ -89,4 +89,5 @@ To balance reasoning capability, latency, and tokens (cost), the plugin must doc
 - [ ] Running `skills/repository-context/scripts/collect-repository-context.py` yields a complete JSON map of the codebase without listing any hardcoded credential values.
 - [ ] The generated report matches the fields laid out in the recommendations markdown template.
 - [ ] The repository contains comprehensive documentation on model selection and runtime routing guidelines.
+- [ ] The package contains a valid `plugins.json` manifest and the slash command definition file `commands/security-logging-advisor.md`.
 

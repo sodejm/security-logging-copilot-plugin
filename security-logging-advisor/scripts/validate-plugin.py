@@ -14,6 +14,8 @@ import re
 
 REQUIRED_STATIC_FILES = [
     "security-logging-advisor/plugin.json",
+    "security-logging-advisor/plugins.json",
+    "security-logging-advisor/commands/security-logging-advisor.md",
     "security-logging-advisor/agents/security-logging-advisor.agent.md",
     "security-logging-advisor/docs/INSTALL.md",
     "security-logging-advisor/docs/ENTERPRISE_ROLLOUT.md",
@@ -216,8 +218,10 @@ def main():
             
     # 2. Validate manifest json schema
     plugin_manifest = "security-logging-advisor/plugin.json"
+    plugins_manifest = "security-logging-advisor/plugins.json"
     plugin_keys = ["id", "name", "version", "description", "publisher", "agents", "skills"]
     errors.extend(check_json_file(plugin_manifest, plugin_keys))
+    errors.extend(check_json_file(plugins_manifest, plugin_keys))
     
     # 3. Validate GitHub marketplace metadata schema
     gh_marketplace = ".github/plugin/marketplace.json"
