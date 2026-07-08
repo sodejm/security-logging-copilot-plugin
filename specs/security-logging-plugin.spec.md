@@ -59,7 +59,7 @@ Provide software development teams with an automated, cost-conscious, and securi
 
 - Verify JSON formatting of the plugin manifests (`plugin.json`, `marketplace.json`).
 - Ensure all required docs, example templates, and scripts are present in the package before release.
-- Validate that all skill files (`SKILL.md`) adhere to the Agent Skills format specification (naming, frontmatter fields, and nested directory layout).
+- Validate that all skill files (`SKILL.md`) strictly adhere to the **Agent Skills standard** ([agentskills.io](https://agentskills.io)) to ensure compatibility, specifically verifying naming conventions, frontmatter fields (YAML), and the nested directory layout.
 
 ---
 
