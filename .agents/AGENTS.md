@@ -15,12 +15,15 @@ This workspace configures the Antigravity developer environment and guidelines f
 - Document implementation summaries in a `walkthrough.md` artifact after completion.
 
 ### Git Development Standards
+- **Branch/Worktree Isolation**: Always isolate work off of a dedicated `feature/` or `bugfix/` branch, or via a git worktree. Do not commit major changes directly to main.
 - **Branch Naming**: Use descriptive prefixes like `feature/`, `bugfix/`, `hotfix/`, `chore/` followed by a concise description (e.g., `feature/add-logging-middleware`).
+- **Commit Frequency**: Always commit incrementally after completing any major sub-tasks or logical changes.
 - **Commit Messages**: Use Conventional Commits formatting:
   - `<type>(<scope>): <short description>`
   - Types: `feat`, `fix`, `chore`, `docs`, `style`, `refactor`, `perf`, `test`.
   - Provide a detailed body in the commit message if the changes are complex.
 - **Code Reviews**: Ensure all code changes are verified, documented, and have corresponding test updates.
+- **Post-Merge Cleanup**: Always clean up and delete/prune the branch or git worktree locally and remotely after merging the changes back into the main branch.
 
 ## Coding & Security Guidelines
 
