@@ -61,6 +61,7 @@ This repository is optimized for development with the **Antigravity IDE** and **
 
 - **Workspace Guidelines**: Project-specific rules and agent instructions are defined in [.agents/AGENTS.md](.agents/AGENTS.md).
 - **Model Context Protocol (MCP)**: Any custom MCP tools or hooks will be configured in the `.agents/` folder.
+- **Model Selection & Routing**: Task-based model recommendations for Gemini, Claude, and GPT families, along with runtime environment detection logic, are detailed in [security-logging-advisor/docs/model-routing.md](security-logging-advisor/docs/model-routing.md).
 
 ## Authors
 

@@ -70,11 +70,23 @@ Provide software development teams with an automated, cost-conscious, and securi
 - **Zero-Dependency Core**: Validation and scanning scripts must run using standard libraries in Python 3.
 - **Circuit Breakers**: The scanner must not crash on massive repositories or single large log files. It will skip files over 1MB and stop scanning after 10,000 files to conserve memory.
 
+## 5. Model Selection & Runtime Environment Guidelines
+
+To balance reasoning capability, latency, and tokens (cost), the plugin must document and support operation across the following runtime environments and model families:
+
+- **Supported Runtime Environments**: GitHub Copilot (VS Code), Claude Code (CLI), and Antigravity TUI.
+- **Model Families & Task Routing**:
+  - **Reasoning & Synthesis (The Agent)**: Recommended models include **Gemini 3.5 Pro (High/Ultra)**, **Claude 3.5 Sonnet**, and **GPT-5.5 Pro / GPT-4o**.
+  - **Static Context Collection (Scanner Skill)**: Recommended models include **Gemini 3.5 Flash**, **Claude 3.5 Haiku / Sonnet**, and **GPT-4o-mini**.
+  - **Local Validation (Lints & Checks)**: Recommended models include **Gemini 1.5 Flash / Flash-8B**, **Claude 3.5 Haiku**, and **GPT-4o-mini**.
+
 ---
 
-## 5. Acceptance Criteria
+## 6. Acceptance Criteria
 
 - [ ] Running `validate-plugin.py` returns code `0` on compliant packages.
 - [ ] All `SKILL.md` files pass parsing and verification against the Agent Skills (agentskills.io) frontmatter specification.
 - [ ] Running `skills/repository-context/scripts/collect-repository-context.py` yields a complete JSON map of the codebase without listing any hardcoded credential values.
 - [ ] The generated report matches the fields laid out in the recommendations markdown template.
+- [ ] The repository contains comprehensive documentation on model selection and runtime routing guidelines.
+

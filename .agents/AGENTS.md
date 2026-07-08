@@ -43,3 +43,19 @@ This workspace configures the Antigravity developer environment and guidelines f
 - Use strict TypeScript mode.
 - Avoid the `any` type; use `unknown` or specific interfaces/types.
 - Ensure proper async/await error handling with try/catch blocks.
+
+## Custom Workspace Skills & Subagent Guidelines
+
+### Spec Alignment & BDD Verification (Spec Alignment Subagent)
+- When changes are proposed to features, ensure `specs/security-logging-plugin.spec.md` is updated.
+- Before committing, invoke a subagent or use local scripts to check that every acceptance criterion has a matching Gherkin scenario in `specs/features/*.feature`.
+
+### Plugin Quality & Standards Verification (QA & Validation Subagent)
+- **Plugin Manifests**: Verify `plugin.json` and `marketplace.json` formatting.
+- **Skill Compliance**: Use the `agentskills-frontmatter-enforcer` skill to verify that all new or modified `SKILL.md` files strictly comply with the `agentskills.io` standard (valid frontmatter, unique names, no files > 500 lines).
+- **Execution Check**: Run the `plugin-validator` skill (`python3 security-logging-advisor/scripts/validate-plugin.py`) before staging or finalizing any changes.
+
+### GitHub Integration & MCP
+- Leverage the **`github-mcp-server`** when executing git standards, automating issues, searching other repositories for reference code, or drafting release PRs.
+- For non-interactive tasks (like scanning for dependencies or issues), run tasks asynchronously in the background.
+

@@ -21,6 +21,7 @@ When activated, you must guide the user through a structured, staged workflow to
 - **No Placeholders**: All instructions, configurations, and outputs must be concrete and directly applicable.
 - **Data Minimization**: Never expose credentials, keys, or raw PII in generated documents.
 - **Cost Sensitivity**: Always design telemetry strategies with cost as a tier-1 constraint immediately following security value.
+- **Model Optimization Hint**: If performing heavy code scans or running multiple local verification steps, prompt the user or utilize subagents configured for Flash/Haiku/mini models to minimize tokens/cost. For final recommendation synthesis, ensure a Pro/Sonnet/GPT-4o level model is active to guarantee high reasoning quality.
 - **Executable Tasks**: Format the final checklist as discrete, actionable items for other agents or developers to execute (e.g., files to edit, exact configurations to apply).
 
 ## Target Schema Compliance
