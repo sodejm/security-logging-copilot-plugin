@@ -1,27 +1,15 @@
 {
-  "id": "security-logging-advisor",
-  "name": "security-logging-advisor",
-"owner":"sodejm",
-  "version": "1.0.0",
-  "publisher": "enterprise-security-engineering",
-  "displayName": "Security Logging Advisor",
-  "description": "Enterprise-grade plugin for security logging audit, logging analysis, and cost-aware recommendations.",
-  "categories": [
-    "Security",
-    "Logging",
-    "DevSecOps"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/internal-enterprise/security-logging-copilot-plugin.git"
+  "name": "security-logging-advisor-marketplace",
+  "owner": {
+    "name": "enterprise-security-engineering",
+    "email": "security@example.com"
   },
-  "bugs": {
-    "url": "https://github.com/internal-enterprise/security-logging-copilot-plugin/issues"
-  },
-  "homepage": "https://github.com/internal-enterprise/security-logging-copilot-plugin#readme",
-  "compatibility": {
-    "copilotCli": true,
-    "vscode": true,
-    "githubEnterprise": true
-  }
+  "plugins": [
+    {
+      "name": "security-logging-advisor",
+      "description": "Enterprise-grade plugin for security logging audit, logging analysis, and cost-aware recommendations.",
+      "version": "1.0.0",
+      "source": "./security-logging-advisor"
+    }
+  ]
 }

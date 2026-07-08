@@ -68,20 +68,37 @@ def create_marketplace_file(filename):
     if dirname: os.makedirs(dirname, exist_ok=True)
     with open(filename, 'w') as f:
         json.dump({
-            "id": "security-logging-advisor",
-            "name": "Security Logging Advisor",
-            "version": "1.0.0",
-            "publisher": "Justin Soderberg",
-            "compatibility": "1.0"
+            "name": "security-logging-advisor-marketplace",
+            "owner": {
+                "name": "Justin Soderberg",
+                "email": "justin@example.com"
+            },
+            "plugins": [
+                {
+                    "name": "security-logging-advisor",
+                    "description": "Security Logging Advisor",
+                    "version": "1.0.0",
+                    "source": "./security-logging-advisor"
+                }
+            ]
         }, f)
         
     os.makedirs(".claude-plugin", exist_ok=True)
     with open(".claude-plugin/marketplace.json", 'w') as f:
         json.dump({
-            "id": "security-logging-advisor",
-            "name": "Security Logging Advisor",
-            "version": "1.0.0",
-            "compatibility": "1.0"
+            "name": "security-logging-advisor-marketplace",
+            "owner": {
+                "name": "Justin Soderberg",
+                "email": "justin@example.com"
+            },
+            "plugins": [
+                {
+                    "name": "security-logging-advisor",
+                    "description": "Security Logging Advisor",
+                    "version": "1.0.0",
+                    "source": "./security-logging-advisor"
+                }
+            ]
         }, f)
 
 @given(parsers.parse('a modular skill markdown file "{filename}"'))
@@ -137,7 +154,23 @@ def custom_skill_in_plugin(skill_id, path):
     for rf in required_files:
         os.makedirs(os.path.dirname(rf), exist_ok=True)
         with open(rf, 'w') as f:
-            if rf.endswith(".json"):
+            if rf.endswith("marketplace.json"):
+                json.dump({
+                    "name": "security-logging-advisor-marketplace",
+                    "owner": {
+                        "name": "Justin Soderberg",
+                        "email": "justin@example.com"
+                    },
+                    "plugins": [
+                        {
+                            "name": "security-logging-advisor",
+                            "description": "Security Logging Advisor",
+                            "version": "1.0.0",
+                            "source": "./security-logging-advisor"
+                        }
+                    ]
+                }, f)
+            elif rf.endswith(".json"):
                 json.dump({"id": "security-logging-advisor", "name": "A", "version": "1.0", "publisher": "P", "compatibility": "1.0"}, f)
             else:
                 f.write('')

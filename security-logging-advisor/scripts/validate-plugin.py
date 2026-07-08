@@ -48,6 +48,50 @@ def check_json_file(file_path, required_keys):
     
     return errors
 
+def check_marketplace_json(file_path):
+    """Parses and validates marketplace.json according to CLI expectations."""
+    if not os.path.isfile(file_path):
+        return [f"File {file_path} is missing."]
+    
+    errors = []
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            
+            # Check required top-level keys
+            required_keys = ["name", "owner", "plugins"]
+            for key in required_keys:
+                if key not in data:
+                    errors.append(f"{file_path} is missing required key: '{key}'")
+            
+            # Check owner is an object with a name
+            if "owner" in data:
+                if not isinstance(data["owner"], dict):
+                    errors.append(f"{file_path} 'owner' must be an object (received {type(data['owner']).__name__})")
+                else:
+                    if "name" not in data["owner"]:
+                        errors.append(f"{file_path} 'owner' is missing required subkey: 'name'")
+            
+            # Check plugins is a list of objects
+            if "plugins" in data:
+                if not isinstance(data["plugins"], list):
+                    errors.append(f"{file_path} 'plugins' must be a list (received {type(data['plugins']).__name__})")
+                else:
+                    for i, plugin in enumerate(data["plugins"]):
+                        if not isinstance(plugin, dict):
+                            errors.append(f"{file_path} 'plugins[{i}]' must be an object")
+                        else:
+                            plugin_keys = ["name", "description", "version", "source"]
+                            for pk in plugin_keys:
+                                if pk not in plugin:
+                                    errors.append(f"{file_path} 'plugins[{i}]' is missing required key: '{pk}'")
+    except json.JSONDecodeError as e:
+        errors.append(f"Failed to parse {file_path} as JSON: {str(e)}")
+    except Exception as e:
+        errors.append(f"Error reading {file_path}: {str(e)}")
+        
+    return errors
+
 def check_skill_markdown(file_path):
     """Validates that a SKILL.md file has a valid YAML frontmatter adhering to the agentskills.io spec."""
     if not os.path.isfile(file_path):
@@ -177,13 +221,11 @@ def main():
     
     # 3. Validate GitHub marketplace metadata schema
     gh_marketplace = ".github/plugin/marketplace.json"
-    gh_keys = ["id", "name", "version", "publisher", "compatibility"]
-    errors.extend(check_json_file(gh_marketplace, gh_keys))
+    errors.extend(check_marketplace_json(gh_marketplace))
     
     # 4. Validate Claude marketplace metadata schema
     claude_marketplace = ".claude-plugin/marketplace.json"
-    claude_keys = ["id", "name", "version", "compatibility"]
-    errors.extend(check_json_file(claude_marketplace, claude_keys))
+    errors.extend(check_marketplace_json(claude_marketplace))
     
     # 5. Dynamically validate skill markdown frontmatter based on plugin.json
     skills = []

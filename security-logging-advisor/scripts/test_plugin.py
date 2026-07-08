@@ -99,7 +99,21 @@ class TestPluginValidation(unittest.TestCase):
                                 ]
                             }, f)
                         else:
-                            json.dump({"id": "test", "name": "test", "version": "1.0.0", "publisher": "test", "compatibility": "test"}, f)
+                            json.dump({
+                                "name": "test-marketplace",
+                                "owner": {
+                                    "name": "test-owner",
+                                    "email": "test@example.com"
+                                },
+                                "plugins": [
+                                    {
+                                        "name": "test-plugin",
+                                        "description": "test description",
+                                        "version": "1.0.0",
+                                        "source": "./test-plugin"
+                                    }
+                                ]
+                            }, f)
                 else:
                     with open(full_path, "w") as f:
                         f.write("mock content")
