@@ -6,6 +6,8 @@ This constitution defines the non-negotiable guidelines, architectural constrain
 
 ## 1. SDD (Spec-Driven Development) Core Workflow
 - **Specify First**: No code shall be modified or implemented without first creating or updating a feature specification under the `specs/` directory.
+- **Feature File Parity**: Any change to a specification in `specs/security-logging-plugin.spec.md` (new requirements, modified acceptance criteria, or behavioral changes) must be accompanied by a corresponding update to the matching Gherkin scenario in `specs/features/`. Specifications and feature files must always be kept in sync.
+- **Acceptance Criteria Coverage**: No acceptance criterion in any spec may be marked complete (`[x]`) unless a `Scenario:` block exists in a `specs/features/*.feature` file that directly tests that criterion. Coverage must be verifiable by the validator script before a criterion is considered closed.
 - **Continuous Alignment**: Maintain the `project-context.md` file to reflect any architectural shifts or added dependencies immediately following implementation.
 - **Commit Standards**: All commits must adhere strictly to Conventional Commits:
   - Format: `<type>(<scope>): <short description>`

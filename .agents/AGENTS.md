@@ -5,6 +5,10 @@ This workspace configures the Antigravity developer environment and guidelines f
 ## Agent Behavior & Workflow Guidelines
 
 ### Planning and Execution
+- **Load SDD Context First**: At the start of any planning or execution task, read the following SDD documents before taking any action:
+  - [`.specify/memory/constitution.md`](.specify/memory/constitution.md) — non-negotiable rules, architectural constraints, and behavior standards.
+  - [`.specify/project-context.md`](.specify/project-context.md) — technology stack, directory layout, and deployment pipelines.
+  - All relevant specifications under [`specs/`](specs/) for the area being changed.
 - Always check the Workspace Customizations Root (`.agents/`) for project-scoped rules.
 - Follow the planning workflow for any major changes, architectural designs, or complex refactorings.
 - Maintain the task tracking document at `task.md` in the agent's conversation/brain artifacts during execution, updating task statuses (`[ ]`, `[/]`, `[x]`) as progress is made.
