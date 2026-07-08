@@ -34,6 +34,9 @@ def create_plugin_dir(filename):
         }, f)
         
     required_files = [
+        "security-logging-advisor/plugin.json",
+        "security-logging-advisor/plugins.json",
+        "security-logging-advisor/commands/security-logging-advisor.md",
         "security-logging-advisor/agents/security-logging-advisor.agent.md",
         "security-logging-advisor/skills/repository-context/SKILL.md",
         "security-logging-advisor/skills/logging-recommendations/SKILL.md",
@@ -58,6 +61,17 @@ def create_plugin_dir(filename):
             with open(rf, 'w') as f:
                 name = os.path.basename(os.path.dirname(rf))
                 f.write(f"---\nname: {name}\ndescription: desc\n---\n")
+        elif rf.endswith(".json"):
+            with open(rf, 'w') as f:
+                json.dump({
+                    "id": "security-logging-advisor",
+                    "name": "Security Logging Advisor",
+                    "version": "1.0.0",
+                    "publisher": "Justin Soderberg",
+                    "description": "Desc",
+                    "agents": [],
+                    "skills": []
+                }, f)
         else:
             with open(rf, 'w') as f:
                 f.write('')
@@ -137,6 +151,9 @@ def custom_skill_in_plugin(skill_id, path):
         json.dump(data, f)
         
     required_files = [
+        "security-logging-advisor/plugin.json",
+        "security-logging-advisor/plugins.json",
+        "security-logging-advisor/commands/security-logging-advisor.md",
         "security-logging-advisor/agents/security-logging-advisor.agent.md",
         "security-logging-advisor/docs/INSTALL.md",
         "security-logging-advisor/docs/ENTERPRISE_ROLLOUT.md",
@@ -171,7 +188,7 @@ def custom_skill_in_plugin(skill_id, path):
                     ]
                 }, f)
             elif rf.endswith(".json"):
-                json.dump({"id": "security-logging-advisor", "name": "A", "version": "1.0", "publisher": "P", "compatibility": "1.0"}, f)
+                json.dump({"id": "security-logging-advisor", "name": "A", "version": "1.0", "publisher": "P", "compatibility": "1.0", "description": "D", "agents": [], "skills": []}, f)
             else:
                 f.write('')
 

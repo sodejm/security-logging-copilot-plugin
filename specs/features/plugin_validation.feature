@@ -5,10 +5,13 @@ Feature: Plugin Architecture and Schema Validation
 
   Scenario: Validate manifest and marketplace files parsing
     Given a plugin directory containing "plugin.json"
+    And a plugin directory containing "plugins.json"
     And a marketplace metadata file ".github/plugin/marketplace.json"
     When the validation script executes
     Then "plugin.json" must parse as valid JSON
     And "plugin.json" must contain keys "id", "name", "version", "publisher", "agents", "skills"
+    And "plugins.json" must parse as valid JSON
+    And "plugins.json" must contain keys "id", "name", "version", "publisher", "agents", "skills"
     And ".github/plugin/marketplace.json" must parse as valid JSON
 
   Scenario: Validate skills frontmatter triggers
