@@ -85,7 +85,21 @@ class TestPluginValidation(unittest.TestCase):
                 full_path = os.path.join(temp_dir, path)
                 if path.endswith(".json"):
                     with open(full_path, "w") as f:
-                        json.dump({"id": "test", "name": "test", "version": "1.0.0", "publisher": "test", "compatibility": "test", "agents": [], "skills": []}, f)
+                        if "plugin.json" in path:
+                            json.dump({
+                                "id": "test",
+                                "name": "test",
+                                "version": "1.0.0",
+                                "description": "test desc",
+                                "publisher": "test",
+                                "agents": [],
+                                "skills": [
+                                    {"id": "repository-context", "name": "test", "description": "test", "path": "skills/repository-context"},
+                                    {"id": "logging-recommendations", "name": "test", "description": "test", "path": "skills/logging-recommendations"}
+                                ]
+                            }, f)
+                        else:
+                            json.dump({"id": "test", "name": "test", "version": "1.0.0", "publisher": "test", "compatibility": "test"}, f)
                 else:
                     with open(full_path, "w") as f:
                         f.write("mock content")

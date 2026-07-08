@@ -59,3 +59,15 @@ This workspace configures the Antigravity developer environment and guidelines f
 - Leverage the **`github-mcp-server`** when executing git standards, automating issues, searching other repositories for reference code, or drafting release PRs.
 - For non-interactive tasks (like scanning for dependencies or issues), run tasks asynchronously in the background.
 
+### Model Selection & Cost Balancing
+- **Task-based Model Preference**: Match the active model's reasoning capabilities with the complexity of the current task to balance performance and token cost:
+  - **Tier 1 (Architectural Reasoning & Synthesis)**: Use `Gemini 3.5 Pro`, `Claude 3.5 Sonnet`, or `GPT-5.5 Pro / GPT-4o`.
+  - **Tier 2 (Repository Context Collection)**: Use `Gemini 3.5 Flash`, `Claude 3.5 Haiku / Sonnet`, or `GPT-4o-mini`.
+  - **Tier 3 (Local Validation & Checking)**: Use `Gemini 1.5 Flash / Flash-8B`, `Claude 3.5 Haiku`, or `GPT-4o-mini`.
+- **Model Toggling**: If executing heavy validation loops or large-scale file reads, prompt the user or toggle commands (such as `/model` or `/fast`) to run the workspace-skills on faster, lower-cost models.
+
+### Clean Git Workspace Maintenance
+- **Worktree Cleanup**: After completing git workflows (checkout, commit, merge, push), check for temporary or secondary worktrees using `git worktree list`.
+- **Pruning**: Proactively remove any stale or unused local worktrees using `git worktree remove <path>` and delete the associated local branch using `git branch -d <branch_name>` (or `git branch -D` if fully verified and merged) to prevent workspace pollution.
+
+

@@ -17,6 +17,7 @@ Modern software development requires strict adherence to security and compliance
 
 ### Prerequisites
 
+- Python 3 (v3.8 or higher recommended)
 - Node.js (v18 or higher recommended)
 - Git
 
